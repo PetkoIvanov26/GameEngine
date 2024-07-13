@@ -1,0 +1,6 @@
+﻿Main.obj : error LNK2019: unresolved external symbol glfwInit referenced in function main
+Main.obj : error LNK2019: unresolved external symbol glfwWindowHint referenced in function main
+Main.obj : error LNK2019: unresolved external symbol glfwCreateWindow referenced in function main
+C:\VulkanSDK\1.3.280.0\Lib32\vulkan-1.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+D:\Programming\VulkanCoreApp\externals\GLFW32\lib-vc2022\glfw3.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+D:\Programming\VulkanCoreApp\x64\Debug\VulkanCoreApp.exe : fatal error LNK1120: 3 unresolved externals
