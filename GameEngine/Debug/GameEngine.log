@@ -6,5 +6,7 @@
   Compiling D:\Programming\GameEngine\GameEngine\shaders\simple_shader.frag...
   Shader compilation completed.
   Press any key to continue . . . 
-  first_app.cpp
+  lve_swap_chain.cpp
+D:\Programming\GameEngine\GameEngine\lve_swap_chain.cpp(37,21): warning C4018: '<': signed/unsigned mismatch
+D:\Programming\GameEngine\GameEngine\lve_swap_chain.cpp(311,21): warning C4018: '<': signed/unsigned mismatch
   GameEngine.vcxproj -> D:\Programming\GameEngine\Debug\GameEngine.exe
