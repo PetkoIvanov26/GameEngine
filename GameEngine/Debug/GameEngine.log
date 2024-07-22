@@ -7,21 +7,5 @@
   Shader compilation completed.
   Press any key to continue . . . 
   first_app.cpp
-  keyboard_movement_controller.cpp
-  lve_camera.cpp
-  lve_game_object.cpp
-  lve_model.cpp
-  GLM_GTX_hash requires C++11 standard library support
-D:\Programming\GameEngine\GameEngine\lve_model.cpp(174,21): warning C4018: '<': signed/unsigned mismatch
-  lve_pipeline.cpp
-  lve_renderer.cpp
-  lve_swap_chain.cpp
-D:\Programming\GameEngine\GameEngine\lve_swap_chain.cpp(37,21): warning C4018: '<': signed/unsigned mismatch
-D:\Programming\GameEngine\GameEngine\lve_swap_chain.cpp(311,21): warning C4018: '<': signed/unsigned mismatch
-  lve_window.cpp
-  Main.cpp
-  lve_device.cpp
-  simple_render_system.cpp
-  Generating Code...
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+D:\Programming\GameEngine\GameEngine\first_app.cpp(33,21): warning C4018: '<': signed/unsigned mismatch
   GameEngine.vcxproj -> D:\Programming\GameEngine\Debug\GameEngine.exe

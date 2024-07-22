@@ -2,6 +2,7 @@
 #include "simple_render_system.h"
 #include "lve_camera.h"
 #include "keyboard_movement_controller.h"
+#include "lve_buffer.h"
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -15,6 +16,11 @@
 #include <cassert>
 namespace lve {
 
+	struct GlobalUbo {
+		glm::mat4 projectionView{ 1.f };
+		glm::vec3 lightDirection = glm::normalize(glm::vec3{ -1.f,-3.f,-1.f });
+	};
+
 	FirstApp::FirstApp()
 	{
 		loadGameObjects();
@@ -23,6 +29,19 @@ namespace lve {
 	{
 	}
 	void FirstApp::run() {
+		std::vector<std::unique_ptr<LveBuffer>> uboBuffers(LveSwapChain::MAX_FRAMES_IN_FLIGHT);
+		for (int i = 0; i < uboBuffers.size(); i++)
+		{
+			uboBuffers[i] = std::make_unique<LveBuffer>(lveDevice,
+				sizeof(GlobalUbo),
+				1,
+				VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+				VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+
+			uboBuffers[i]->map();
+		}
+		
+
 		SimpleRenderSystem simpleRenderSystem{lveDevice,lveRenderer.getSwapChainRenderPass()};
        
         LveCamera camera{};
@@ -47,13 +66,21 @@ namespace lve {
 
             camera.setPerspectiveProjection(glm::radians(50.f), -aspect, 0.1f, 100.f);
 			if (auto commandBuffer = lveRenderer.beginFrame()) {
+				int frameIndex = lveRenderer.getFrameIndex();
+				FrameInfo frameInfo{
+					frameIndex,
+					frameTime,
+					commandBuffer,
+					camera
+				};
 
-				//begin offscreen shadow pass
-				// render shadow casting objects
-				// end offscreen shadow pass
+				GlobalUbo ubo{};
+				ubo.projectionView = camera.getProjection() * camera.getView();
+				uboBuffers[frameIndex]-> writeToBuffer(&ubo, frameIndex);
+				uboBuffers[frameIndex]->flush();
 
 				lveRenderer.beginSwapChainRenderPass(commandBuffer);
-				simpleRenderSystem.renderGameObjects(commandBuffer,gameObjects, camera);
+				simpleRenderSystem.renderGameObjects(frameInfo,gameObjects);
 				lveRenderer.endSwapChainRenderPass(commandBuffer);
 				lveRenderer.endFrame();
 			}
@@ -66,11 +93,11 @@ namespace lve {
 
 	void FirstApp::loadGameObjects() {
 		std::shared_ptr<LveModel> lveModel =
-			LveModel::createModelFromFile(lveDevice, "models/smooth_vase.obj");
+			LveModel::createModelFromFile(lveDevice, "models/flat_vase.obj");
 		auto gameObj = LveGameObject::createGameObject();
 		gameObj.model = lveModel;
-		gameObj.transform.translation = { .0f, .0f, 2.5f };
-		gameObj.transform.scale = glm::vec3(3.f);
+		gameObj.transform.translation = { .0f, .5f, 2.5f };
+		gameObj.transform.scale = {3.f,5.f,3.f};
 		gameObjects.push_back(std::move(gameObj));
 	}
 }
