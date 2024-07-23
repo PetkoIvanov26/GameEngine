@@ -1,14 +1,17 @@
 #pragma once
-#include "lve_window.h"
+
+#include "lve_descriptors.h"
 #include "lve_device.h"
 #include "lve_game_object.h"
 #include "lve_renderer.h"
+#include "lve_window.h"
 
+// std
 #include <memory>
 #include <vector>
+
 namespace lve {
-	class FirstApp
-	{
+	class FirstApp {
 	public:
 		static constexpr int WIDTH = 800;
 		static constexpr int HEIGHT = 600;
@@ -20,12 +23,16 @@ namespace lve {
 		FirstApp& operator=(const FirstApp&) = delete;
 
 		void run();
+
 	private:
 		void loadGameObjects();
 
-		LveWindow lveWindow{ WIDTH, HEIGHT , "Game Engine" };
+		LveWindow lveWindow{ WIDTH, HEIGHT, "Vulkan Tutorial" };
 		LveDevice lveDevice{ lveWindow };
-		LveRenderer lveRenderer{ lveWindow ,lveDevice };
+		LveRenderer lveRenderer{ lveWindow, lveDevice };
+
+		// note: order of declarations matters
+		std::unique_ptr<LveDescriptorPool> globalPool{};
 		std::vector<LveGameObject> gameObjects;
 	};
 }
