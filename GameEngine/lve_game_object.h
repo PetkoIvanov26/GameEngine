@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <memory>
+#include<unordered_map>
 namespace lve {
 	class LveGameObject
 	{
@@ -19,6 +20,7 @@ namespace lve {
 		
 	public:
 		using id_t = unsigned int;
+		using Map = std::unordered_map<id_t, LveGameObject>;
 		static LveGameObject createGameObject() {
 			static id_t currentId = 0;
 			return LveGameObject(currentId++);

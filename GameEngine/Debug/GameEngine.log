@@ -6,5 +6,12 @@
   Compiling D:\Programming\GameEngine\GameEngine\shaders\simple_shader.frag...
   Shader compilation completed.
   Press any key to continue . . . 
+  Main.cpp
+  first_app.cpp
+D:\Programming\GameEngine\GameEngine\first_app.cpp(39,27): warning C4018: '<': signed/unsigned mismatch
+D:\Programming\GameEngine\GameEngine\first_app.cpp(55,27): warning C4018: '<': signed/unsigned mismatch
   keyboard_movement_controller.cpp
+  lve_game_object.cpp
+  simple_render_system.cpp
+  Generating Code...
   GameEngine.vcxproj -> D:\Programming\GameEngine\Debug\GameEngine.exe
