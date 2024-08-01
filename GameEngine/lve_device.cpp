@@ -121,6 +121,7 @@ void LveDevice::pickPhysicalDevice() {
   for (const auto &device : devices) {
     if (isDeviceSuitable(device)) {
       physicalDevice = device;
+      queueFamilyIndices = findQueueFamilies(device); // Store the queue family indices
       break;
     }
   }
@@ -134,10 +135,10 @@ void LveDevice::pickPhysicalDevice() {
 }
 
 void LveDevice::createLogicalDevice() {
-  QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
+    queueFamilyIndices = findQueueFamilies(physicalDevice);
 
   std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
-  std::set<uint32_t> uniqueQueueFamilies = {indices.graphicsFamily, indices.presentFamily};
+  std::set<uint32_t> uniqueQueueFamilies = { queueFamilyIndices.graphicsFamily, queueFamilyIndices.presentFamily};
 
   float queuePriority = 1.0f;
   for (uint32_t queueFamily : uniqueQueueFamilies) {
@@ -175,8 +176,8 @@ void LveDevice::createLogicalDevice() {
     throw std::runtime_error("failed to create logical device!");
   }
 
-  vkGetDeviceQueue(device_, indices.graphicsFamily, 0, &graphicsQueue_);
-  vkGetDeviceQueue(device_, indices.presentFamily, 0, &presentQueue_);
+  vkGetDeviceQueue(device_, queueFamilyIndices.graphicsFamily, 0, &graphicsQueue_);
+  vkGetDeviceQueue(device_, queueFamilyIndices.presentFamily, 0, &presentQueue_);
 }
 
 void LveDevice::createCommandPool() {

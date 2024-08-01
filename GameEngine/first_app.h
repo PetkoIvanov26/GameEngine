@@ -3,6 +3,7 @@
 #include "lve_descriptors.h"
 #include "lve_device.h"
 #include "lve_game_object.h"
+#include "game_engine_ui.h"
 #include "lve_renderer.h"
 #include "lve_window.h"
 
@@ -30,6 +31,8 @@ namespace lve {
 		LveWindow lveWindow{ WIDTH, HEIGHT, "Vulkan Tutorial" };
 		LveDevice lveDevice{ lveWindow };
 		LveRenderer lveRenderer{ lveWindow, lveDevice };
+		GameEngineUI gameEngineUI{ lveWindow.getGLFWwindow(), lveDevice, lveRenderer.getSwapChainRenderPass(), globalPool };
+
 
 		// note: order of declarations matters
 		std::unique_ptr<LveDescriptorPool> globalPool{};

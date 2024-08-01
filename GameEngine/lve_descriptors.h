@@ -76,7 +76,7 @@ namespace lve {
             const VkDescriptorSetLayout descriptorSetLayout, VkDescriptorSet& descriptor) const;
 
         void freeDescriptors(std::vector<VkDescriptorSet>& descriptors) const;
-
+        VkDescriptorPool getPool() const { return descriptorPool; }
         void resetPool();
 
     private:

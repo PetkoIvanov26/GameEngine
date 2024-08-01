@@ -107,6 +107,7 @@ namespace lve {
                 lveRenderer.beginSwapChainRenderPass(commandBuffer);
                 simpleRenderSystem.renderGameObjects(frameInfo);
                 pointLightSystem.render(frameInfo);
+               /* gameEngineUI.RenderUI(gameObjects, commandBuffer);*/
                 lveRenderer.endSwapChainRenderPass(commandBuffer);
                 lveRenderer.endFrame();
             }
