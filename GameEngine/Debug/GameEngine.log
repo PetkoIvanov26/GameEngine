@@ -8,9 +8,32 @@
   Compiling D:\Programming\GameEngine\GameEngine\shaders\simple_shader.frag...
   Shader compilation completed.
   Press any key to continue . . . 
+  Main.cpp
   first_app.cpp
 D:\Programming\GameEngine\GameEngine\first_app.cpp(34,27): warning C4018: '<': signed/unsigned mismatch
 D:\Programming\GameEngine\GameEngine\first_app.cpp(50,27): warning C4018: '<': signed/unsigned mismatch
 D:\Programming\GameEngine\GameEngine\first_app.cpp(152,27): warning C4018: '<': signed/unsigned mismatch
+  game_engine_ui.cpp
+D:\Programming\GameEngine\GameEngine\game_engine_ui.cpp(79,35): warning C4018: '<': signed/unsigned mismatch
+D:\Programming\GameEngine\GameEngine\game_engine_ui.cpp(93,57): warning C4018: '<': signed/unsigned mismatch
+D:\Programming\GameEngine\GameEngine\game_engine_ui.cpp(152,89): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\Programming\GameEngine\GameEngine\game_engine_ui.cpp(153,89): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\Programming\GameEngine\GameEngine\game_engine_ui.cpp(154,89): warning C4305: 'argument': truncation from 'double' to 'float'
+  keyboard_movement_controller.cpp
+  lve_buffer.cpp
+D:\Programming\GameEngine\GameEngine\lve_buffer.cpp(98,34): warning C4244: 'argument': conversion from 'VkDeviceSize' to 'size_t', possible loss of data
+D:\Programming\GameEngine\GameEngine\lve_buffer.cpp(103,37): warning C4244: 'argument': conversion from 'VkDeviceSize' to 'size_t', possible loss of data
+  lve_device.cpp
+  lve_game_object.cpp
+  lve_model.cpp
+  GLM_GTX_hash requires C++11 standard library support
+  lve_pipeline.cpp
+  lve_swap_chain.cpp
+D:\Programming\GameEngine\GameEngine\lve_swap_chain.cpp(40,23): warning C4018: '<': signed/unsigned mismatch
+D:\Programming\GameEngine\GameEngine\lve_swap_chain.cpp(308,21): warning C4018: '<': signed/unsigned mismatch
+  point_light_system.cpp
+  simple_render_system.cpp
+  Generating Code...
+  LINK : D:\Programming\GameEngine\Debug\GameEngine.exe not found or not built by the last incremental link; performing full link
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   GameEngine.vcxproj -> D:\Programming\GameEngine\Debug\GameEngine.exe
