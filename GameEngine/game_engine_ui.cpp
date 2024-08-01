@@ -1,9 +1,16 @@
 #include "game_engine_ui.h"
 
+#include<iostream>
 namespace lve {
-    GameEngineUI::GameEngineUI(GLFWwindow* window, LveDevice& device, VkRenderPass renderPass , std::unique_ptr<LveDescriptorPool>& globalPool)
+    GameEngineUI::GameEngineUI(GLFWwindow* window, LveDevice& device, VkRenderPass renderPass, std::unique_ptr<LveDescriptorPool>& globalPool)
         : window(window), lveDevice(device), renderPass(renderPass), selectedObjectIndex(-1), globalPool(globalPool) {
-        Initialize();
+        try {
+            Initialize();
+        }
+        catch (const std::exception& e) {
+            std::cerr << "Error during ImGui initialization: " << e.what() << std::endl;
+            throw;
+        }
     }
 
     GameEngineUI::~GameEngineUI()
@@ -46,6 +53,16 @@ namespace lve {
         ImGui::DestroyContext();
     }
 
+    std::vector<std::string> GameEngineUI::listModelFiles(const std::string& directory) {
+        std::vector<std::string> modelFiles;
+        for (const auto& entry : std::filesystem::directory_iterator(directory)) {
+            if (entry.is_regular_file() && entry.path().extension() == ".obj") {
+                modelFiles.push_back(entry.path().string());
+            }
+        }
+        return modelFiles;
+    }
+
     void GameEngineUI::RenderUI(LveGameObject::Map& gameObjects, VkCommandBuffer commandBuffer) {
         ImGui_ImplVulkan_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -53,9 +70,55 @@ namespace lve {
 
         ImGui::Begin("Object Manipulator");
 
-        if (ImGui::Button("Insert Object")) {
-            auto newObj = LveGameObject::createGameObject();
-            gameObjects.emplace(newObj.getId(), std::move(newObj));
+        static int selectedModel = 0;
+        modelFiles = listModelFiles("models");
+        if (!modelFiles.empty()) {
+            static int selectedModel = 0;
+
+            if (ImGui::BeginCombo("Select Model", modelFiles[selectedModel].c_str())) {
+                for (int i = 0; i < modelFiles.size(); i++) {
+                    bool isSelected = (selectedModel == i);
+                    if (ImGui::Selectable(modelFiles[i].c_str(), isSelected)) {
+                        selectedModel = i;
+                    }
+                    if (isSelected) {
+                        ImGui::SetItemDefaultFocus();
+                    }
+                }
+                ImGui::EndCombo();
+            }
+
+            if (ImGui::Button("Load Selected Model")) {
+                auto newObj = LveGameObject::createGameObject();
+                if (selectedModel >= 0 && selectedModel < modelFiles.size()) {
+                    newObj.model = LveModel::createModelFromFile(lveDevice, modelFiles[selectedModel]);
+                    gameObjects.emplace(newObj.getId(), std::move(newObj));
+                }
+            }
+        }
+        else {
+            ImGui::Text("No models found in the directory.");
+        }
+
+        // Remove Selected Object
+        if (selectedObjectIndex != -1 && ImGui::Button("Remove Selected Object")) {
+            vkDeviceWaitIdle(lveDevice.device());
+
+            auto it = gameObjects.begin();
+            std::advance(it, selectedObjectIndex);
+            if (it != gameObjects.end()) {
+                // Clean up Vulkan resources associated with the object
+                if (it->second.model) {
+                    it->second.model->cleanup();
+                }
+
+                gameObjects.erase(it);
+                selectedObjectIndex = -1; // Reset selection
+            }
+        }
+        if (ImGui::Button("Add Point Light")) {
+            auto newLight = LveGameObject::makePointLight();
+            gameObjects.emplace(newLight.getId(), std::move(newLight));
         }
 
         if (ImGui::BeginListBox("Objects")) {
@@ -74,15 +137,21 @@ namespace lve {
             for (auto& [id, obj] : gameObjects) {
                 if (index == selectedObjectIndex) {
                     ImGui::Text("Selected Object: %d", id);
+
+                    if (obj.pointLight) {
+                        ImGui::ColorEdit3("Light Color", reinterpret_cast<float*>(&obj.color));
+                        ImGui::SliderFloat("Light Intensity", &obj.pointLight->lightIntensity, 0.0f, 10.0f);
+                    }
+
                     ImGui::SliderFloat("X", &obj.transform.translation.x, -10.0f, 10.0f);
                     ImGui::SliderFloat("Y", &obj.transform.translation.y, -10.0f, 10.0f);
                     ImGui::SliderFloat("Z", &obj.transform.translation.z, -10.0f, 10.0f);
                     ImGui::SliderFloat("Scale X", &obj.transform.scale.x, 0.1f, 10.0f);
                     ImGui::SliderFloat("Scale Y", &obj.transform.scale.y, 0.1f, 10.0f);
                     ImGui::SliderFloat("Scale Z", &obj.transform.scale.z, 0.1f, 10.0f);
-                    ImGui::SliderFloat("Rotation X", &obj.transform.rotation.x, 0.0f, 360.0f);
-                    ImGui::SliderFloat("Rotation Y", &obj.transform.rotation.y, 0.0f, 360.0f);
-                    ImGui::SliderFloat("Rotation Z", &obj.transform.rotation.z, 0.0f, 360.0f);
+                    ImGui::SliderFloat("Rotation X", &obj.transform.rotation.x, 0.1, 3.6);
+                    ImGui::SliderFloat("Rotation Y", &obj.transform.rotation.y, 0.1, 3.6);
+                    ImGui::SliderFloat("Rotation Z", &obj.transform.rotation.z, 0.1, 3.6);
                     break;
                 }
                 ++index;

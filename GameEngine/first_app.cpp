@@ -20,10 +20,11 @@ namespace lve {
     FirstApp::FirstApp() {
         globalPool =
             LveDescriptorPool::Builder(lveDevice)
-            .setMaxSets(LveSwapChain::MAX_FRAMES_IN_FLIGHT)
-            .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, LveSwapChain::MAX_FRAMES_IN_FLIGHT)
+            .setMaxSets(LveSwapChain::MAX_FRAMES_IN_FLIGHT + 20)
+            .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, LveSwapChain::MAX_FRAMES_IN_FLIGHT + 20)
+            .addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, LveSwapChain::MAX_FRAMES_IN_FLIGHT + 20)  
             .build();
-        loadGameObjects();
+        gameEngineUI = std::make_unique<GameEngineUI>(lveWindow.getGLFWwindow(), lveDevice, lveRenderer.getSwapChainRenderPass(), globalPool);
     }
 
     FirstApp::~FirstApp() {}
@@ -107,7 +108,7 @@ namespace lve {
                 lveRenderer.beginSwapChainRenderPass(commandBuffer);
                 simpleRenderSystem.renderGameObjects(frameInfo);
                 pointLightSystem.render(frameInfo);
-               /* gameEngineUI.RenderUI(gameObjects, commandBuffer);*/
+                gameEngineUI->RenderUI(gameObjects, commandBuffer);
                 lveRenderer.endSwapChainRenderPass(commandBuffer);
                 lveRenderer.endFrame();
             }

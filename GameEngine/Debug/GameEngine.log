@@ -9,7 +9,8 @@
   Shader compilation completed.
   Press any key to continue . . . 
   first_app.cpp
-D:\Programming\GameEngine\GameEngine\first_app.cpp(33,27): warning C4018: '<': signed/unsigned mismatch
-D:\Programming\GameEngine\GameEngine\first_app.cpp(49,27): warning C4018: '<': signed/unsigned mismatch
-D:\Programming\GameEngine\GameEngine\first_app.cpp(151,27): warning C4018: '<': signed/unsigned mismatch
+D:\Programming\GameEngine\GameEngine\first_app.cpp(34,27): warning C4018: '<': signed/unsigned mismatch
+D:\Programming\GameEngine\GameEngine\first_app.cpp(50,27): warning C4018: '<': signed/unsigned mismatch
+D:\Programming\GameEngine\GameEngine\first_app.cpp(152,27): warning C4018: '<': signed/unsigned mismatch
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   GameEngine.vcxproj -> D:\Programming\GameEngine\Debug\GameEngine.exe

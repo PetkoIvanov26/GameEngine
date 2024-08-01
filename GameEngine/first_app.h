@@ -31,11 +31,9 @@ namespace lve {
 		LveWindow lveWindow{ WIDTH, HEIGHT, "Vulkan Tutorial" };
 		LveDevice lveDevice{ lveWindow };
 		LveRenderer lveRenderer{ lveWindow, lveDevice };
-		GameEngineUI gameEngineUI{ lveWindow.getGLFWwindow(), lveDevice, lveRenderer.getSwapChainRenderPass(), globalPool };
-
-
 		// note: order of declarations matters
 		std::unique_ptr<LveDescriptorPool> globalPool{};
 		LveGameObject::Map gameObjects;
+		std::unique_ptr<GameEngineUI> gameEngineUI;
 	};
 }

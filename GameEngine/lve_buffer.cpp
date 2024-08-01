@@ -15,6 +15,19 @@ namespace lve {
      *
      * @return VkResult of the buffer mapping call
      */
+    void LveBuffer::destroy() {
+        if (mapped) {
+            unmap();
+        }
+        if (buffer != VK_NULL_HANDLE) {
+            vkDestroyBuffer(lveDevice.device(), buffer, nullptr);
+            buffer = VK_NULL_HANDLE;
+        }
+        if (memory != VK_NULL_HANDLE) {
+            vkFreeMemory(lveDevice.device(), memory, nullptr);
+            memory = VK_NULL_HANDLE;
+        }
+    }
     VkDeviceSize LveBuffer::getAlignment(VkDeviceSize instanceSize, VkDeviceSize minOffsetAlignment) {
         if (minOffsetAlignment > 0) {
             return (instanceSize + minOffsetAlignment - 1) & ~(minOffsetAlignment - 1);
@@ -40,9 +53,7 @@ namespace lve {
     }
 
     LveBuffer::~LveBuffer() {
-        unmap();
-        vkDestroyBuffer(lveDevice.device(), buffer, nullptr);
-        vkFreeMemory(lveDevice.device(), memory, nullptr);
+        destroy();
     }
 
     /**

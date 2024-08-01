@@ -68,4 +68,10 @@ namespace lve {
         return gameObj;
     }
 
+    void LveGameObject::cleanup() {
+        if (model) {
+            model->cleanup(); 
+        }   
+    }
+
 }

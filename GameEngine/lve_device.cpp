@@ -57,15 +57,18 @@ LveDevice::LveDevice(LveWindow &window) : window{window} {
 }
 
 LveDevice::~LveDevice() {
-  vkDestroyCommandPool(device_, commandPool, nullptr);
-  vkDestroyDevice(device_, nullptr);
+    // Wait for the device to become idle before destroying any Vulkan objects
+    vkDeviceWaitIdle(device_);
 
-  if (enableValidationLayers) {
-    DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
-  }
+    vkDestroyCommandPool(device_, commandPool, nullptr);
+    vkDestroyDevice(device_, nullptr);
 
-  vkDestroySurfaceKHR(instance, surface_, nullptr);
-  vkDestroyInstance(instance, nullptr);
+    if (enableValidationLayers) {
+        DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
+    }
+
+    vkDestroySurfaceKHR(instance, surface_, nullptr);
+    vkDestroyInstance(instance, nullptr);
 }
 
 void LveDevice::createInstance() {

@@ -45,7 +45,7 @@ namespace lve {
 
 		void bind(VkCommandBuffer commandBuffer);
 		void draw(VkCommandBuffer commandBuffer);
-
+		void cleanup();
 	private:
 		void createVertexBuffers(const std::vector<Vertex>& vertices);
 		void createIndexBuffers(const std::vector<uint32_t>& indices);

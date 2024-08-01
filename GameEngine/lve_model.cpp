@@ -56,6 +56,17 @@ namespace lve {
 				vkCmdDraw(commandBuffer, vertexCount, 1, 0, 0);
 			}
 		}
+		void LveModel::cleanup()
+		{
+			if (vertexBuffer) {
+				vertexBuffer->destroy();
+				vertexBuffer.reset();
+			}
+			if (indexBuffer) {
+				indexBuffer->destroy();
+				indexBuffer.reset();
+			}
+		}
 	void LveModel::createVertexBuffers(const std::vector<Vertex>& vertices)
 	{
 		vertexCount = static_cast<uint32_t>(vertices.size());

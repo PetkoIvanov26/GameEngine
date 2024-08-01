@@ -40,6 +40,8 @@ namespace lve {
         VkMemoryPropertyFlags getMemoryPropertyFlags() const { return memoryPropertyFlags; }
         VkDeviceSize getBufferSize() const { return bufferSize; }
 
+        void destroy(); // Add destroy method
+
     private:
         static VkDeviceSize getAlignment(VkDeviceSize instanceSize, VkDeviceSize minOffsetAlignment);
 
